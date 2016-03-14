@@ -4,7 +4,12 @@ import datetime
 
 
 def hello(request):
-    return HttpResponse("Hello world")
+    values = request.META.items()
+    sorted(values)
+    html = []
+    for k, v in values:
+        html.append('<tr><td>%s</td><td>%s</td></tr>' % (k, v))
+    return HttpResponse('<table>%s</table>' % '\n'.join(html))
 
 
 def current_datetime(request):
@@ -19,6 +24,3 @@ def hours_ahead(request, offset):
         raise Http404()
     dt = datetime.datetime.now() + datetime.timedelta(hours=offset)
     return render_to_response('hours_ahead.html', {'offset': offset, 'next_time': dt})
-
-
-
